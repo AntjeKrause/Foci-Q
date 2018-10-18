@@ -5,6 +5,6 @@
 !config.py
 !foci.cfg
 !evaluation.py
+!macros
 macros/*
-!macros/**
 !macros/dialog4.ijm
