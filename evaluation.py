@@ -38,17 +38,16 @@ def scanFolders(path):
                             
                             peak_list = peak_list.append(df_temp, ignore_index = True) #Append new data to list
                             
-                        #peak_list = peak_list.set_index("Image")
-                       # peak_list = peak_list.set_index('Image', inplace=True)
+
                         peak_list.to_excel(excel_wr, sheet_name = "Output")
                         global foci_value_counts
                         foci_value_counts = peak_list["Foci"].value_counts().sort_index()
-                        #foci_value_counts.reset_index(name="Count", drop=True, inplace = True)
+
                         global df2
                         df2 = pd.DataFrame(columns = ["Count", "Foci"])
                         df2 = df2.append(foci_value_counts, ignore_index = True)
                         foci_value_counts.to_excel(excel_wr, sheet_name = "Output", startcol = 8)
-                        #Add avg, max
+
                         workbook = excel_wr.book
                         worksheet = excel_wr.sheets["Output"]
                         bold = workbook.add_format({'bold': True})
