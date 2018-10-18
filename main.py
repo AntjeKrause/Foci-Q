@@ -60,7 +60,7 @@ class App:
              
         def startIj():
             global child
-            child = subprocess.Popen(["java", "-jar", "ij.jar",  "-m", "dialog4.ijm"])            
+            child = subprocess.Popen(["java", "-jar", "ij.jar",  "-m", "foci.ijm"])            
            
         def checkInput(path):
             if os.path.exists(path):
