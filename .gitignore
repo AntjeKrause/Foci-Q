@@ -1,8 +1,10 @@
+/*
 !.gitignore
 !README.md
 !main.py
 !config.py
 !foci.cfg
 !evaluation.py
+macros/*
+!macros/**
 !macros/dialog4.ijm
-/*
