@@ -36,8 +36,5 @@ def readCfg(path):
     fr.close()
     noise = settings[0]
     background = settings[1]
-    return noise[6:], background[11:]
-"""
-writeCfg(os.getcwd(), 200, 1038)
-test = readCfg(os.getcwd())
-"""
+    path = settings[2]
+    return noise[6:], background[11:], path[5:]

@@ -21,7 +21,6 @@ def scanFolders(path):
                 scanFolders(entry)
             else:
                 if len(os.listdir(entry.path)) != 0:
-                    print("T" + entry.path)
                     for i in os.listdir(entry.path):
                         if i.endswith("csv"):
                             files.append(i)
