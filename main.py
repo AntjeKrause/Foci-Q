@@ -27,8 +27,11 @@ class App:
     def __init__(self, master):
         
         def updateLog(text):
+            self.user_log.configure(state="normal")
             text = text + "\n"
             self.user_log.insert(END, text)
+            self.user_log.see("end")
+            self.user_log.configure(state="disabled")
             pass
         
         def choosePath(event=None):
@@ -72,8 +75,9 @@ class App:
                 #print("Working")
                 time.sleep(1)
             updateLog("IJ done...")
-            evaluation.scanFolders(dirname)
             updateLog("Starting evaluation...")
+            evaluation.scanFolders(dirname)
+            updateLog("Finished. Check Results folder!")
             
         def checkInput(path):
             if os.path.exists(path):
@@ -86,7 +90,7 @@ class App:
         self.master = master
         master.title("Foci Macro")
         master.geometry('470x300')
-        
+        #master.configure(background='grey')
         self.font = tkFont.Font(family="courier", size=8)
         self.choose_label = Label(master, text = "Image path: ")
         self.choose_label.grid(column = 0, row = 0, sticky = W, padx = 10)
@@ -112,6 +116,7 @@ class App:
         self.user_log_label.grid(column = 0, row = 7, sticky = W, padx = 10)
         self.user_log = ScrolledText.ScrolledText(root, height = 5, width = 50, font = self.font)
         self.user_log.grid(column = 0, row = 8, sticky = W, padx = 10)
+        self.user_log.configure(state="disabled")
         
         self.start_btn = Button(root, text="Go!", command = lambda : checkInput(dirname))
         self.start_btn.grid(column = 0, row = 9, sticky = W, padx = 10, pady = 10)
