@@ -6,6 +6,7 @@ Created on Tue Sep 25 12:48:39 2018
 """
 wd = ""
 import os
+import sys
 import threading
 import time
 import subprocess
@@ -60,8 +61,20 @@ class App:
              
         def startIj():
             global child
-            child = subprocess.Popen(["java", "-jar", "ij.jar",  "-m", "foci.ijm"])            
-           
+            child = subprocess.Popen(["java", "-jar", "ij.jar", "-m", "foci.ijm"])            #,  "-m", "foci.ijm"
+            t1 = threading.Thread(target=startEvaluation)
+            t1.start()
+            
+            
+        def startEvaluation():
+            #check if IJ finished
+            while child.poll() is None:
+                #print("Working")
+                time.sleep(1)
+            updateLog("IJ done...")
+            evaluation.scanFolders(dirname)
+            updateLog("Starting evaluation...")
+            
         def checkInput(path):
             if os.path.exists(path):
                 startThread()

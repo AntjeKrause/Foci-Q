@@ -11,6 +11,8 @@ and summarizes them as output.xlsx
 import os
 import pandas as pd
 
+files = []
+
 def scanFolders(path):
     for entry in os.scandir(path):
         if entry.is_dir():
@@ -92,3 +94,4 @@ def scanFolders(path):
                         worksheet.insert_chart("M8", chart)
                         #Close workbook
                         workbook.close()
+                       
