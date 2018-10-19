@@ -7,4 +7,4 @@
 !evaluation.py
 !macros
 macros/*
-!macros/dialog4.ijm
+!macros/foci.ijm
