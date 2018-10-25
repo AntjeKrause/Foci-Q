@@ -26,6 +26,7 @@ class App:
     
     def __init__(self, master):
         
+       
         def updateLog(text):
             #Updates log window with given text
             self.user_log.configure(state="normal")
@@ -38,13 +39,12 @@ class App:
         def choosePath(event=None):
             #Opens file dialog to search 
             global dirname
-            print("Initializing Dialogue...\nPlease select a directory.")
+            print("Select a directory.")
             dirname = filedialog.askdirectory(initialdir=os.getcwd(),title='Please select a directory')
             if len(dirname) > 0:
-                print ("You chose %s" % dirname)
+                print ("Chose" + str(dirname))
             else: 
-                dirname = os.getcwd()
-                print ("\nNo directory selected")
+                print ("No directory selected.. Using config.")
             self.path_field_image.delete("1.0", END) 
             self.path_field_image.insert(CURRENT, dirname)   
             updateLog("Updated Path to: " + dirname)
@@ -81,7 +81,8 @@ class App:
             else:
                 updateLog("Error: path does not exist.")
             
-    
+        global dirname
+        dirname = config.readCfg(os.getcwd())[2]
         #master settings
         self.master = master
         master.title("FociQ")
