@@ -20,7 +20,10 @@ def writeCfg(path, imgpath, noise, background):
     fw = open(path + pathVar + "foci.cfg", "w")
     fw.write("noise="+str(noise)+"\n")
     fw.write("background="+str(background)+"\n")
-    fw.write("path="+str(imgpath)+"/\n")
+    if str(imgpath).endswith("/"):
+        fw.write("path="+str(imgpath)+"\n")
+    else:
+        fw.write("path="+str(imgpath)+"/\n")
     fw.close()
     pass
 
