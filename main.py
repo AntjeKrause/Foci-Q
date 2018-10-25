@@ -84,7 +84,7 @@ class App:
     
         #master settings
         self.master = master
-        master.title("Foci Loc")
+        master.title("FociQ")
         master.geometry('470x300')
         #master.configure(background='grey')
         self.font = tkFont.Font(family="courier", size=8)
