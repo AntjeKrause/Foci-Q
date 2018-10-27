@@ -73,7 +73,7 @@ def scanFolders(path):
                         worksheet.write("M5", "Median", bold)
                         worksheet.write("N5", peak_list["Foci"].median())
                         worksheet.write("M6", "STD", bold)
-                        worksheet.write("N6", peak_list["Foci"].std())
+                        worksheet.write("N6", str(peak_list["Foci"].std(skipna = True)))
                         chart = workbook.add_chart({'type': 'column'})
                         
                         chart.add_series({
