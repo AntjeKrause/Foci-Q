@@ -121,9 +121,11 @@ class App:
         self.start_btn = Button(root, text="Go!", command = lambda : checkInput(dirname))
         self.start_btn.grid(column = 0, row = 9, sticky = W, padx = 10, pady = 10)
         
-        self.version = Label(master, text = "0.1.0")
+        self.version = Label(master, text = "0.1.1")
         self.version.grid(column = 1, row = 10, sticky = E)
 
 root = Tk()
+root.iconbitmap("icon.ico")
+
 gui = App(root)
 root.mainloop()
