@@ -10,3 +10,4 @@ macros/*
 !macros/foci.ijm
 !icon.ico
 !requirements.txt
+!UserGuide.pdf
