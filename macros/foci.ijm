@@ -48,8 +48,7 @@ function processFiles(dir) {
 }
 
 function processFile(path) {
-    //print("test2");
-    if (endsWith(path, ".JPG") || endsWith(path, ".TIF")) {
+    if (endsWith(path, ".JPG") || endsWith(path, ".TIF") || endsWith(path, ".jpg") || endsWith(path, ".tif")) {
         open(path); 
         imgName = getTitle();
         selectWindow(imgName);
