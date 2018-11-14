@@ -67,13 +67,14 @@ function processFile(path) {
         roiManager("Measure");
         selectWindow(imgName+" (green)" + " Maxima");
         //Save ROIs
-        saveAs("Tiff", splitDir + imgName + "-ROI.tiff");
+        saveAs("Tiff", splitDir + imgName + "Green-ROI.tiff");
 
+        
         //Foci berechnen
         for(j = 0; j < Table.size; j++) {
             rInt = Table.get("RawIntDen", j);
             foci = rInt/255;
-            setResult("Foci", j, foci);
+            setResult("FociGreen", j, foci);
         }
         //Save results
         saveAs("Results", splitDir + imgName + ".csv");
