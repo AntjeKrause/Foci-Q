@@ -7,6 +7,6 @@ FociQ is a python written application to quantify nuclear foci in cells. It uses
 # Changelog
 
 ## 0.1.2 14-11-2018
-*Improved stability: FociQ should no longer start processing if ij.jar is not found and will report in the log.
-*Additions in user guide.
-*Added Changelog for good measures.
+* Improved stability: FociQ should no longer start processing if ij.jar is not found and will report in the log.
+* Additions in user guide.
+* Added Changelog for good measures.
