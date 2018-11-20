@@ -57,8 +57,9 @@ function processFile(path) {
         run("16-bit");
         run("Smooth");
         setAutoThreshold("Li dark");
-        run("Analyze Particles...", "size=500-Infinity exclude clear summarize add");
+        run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
 
+        //Green Channel
         selectWindow(imgName+" (green)");
         run("Subtract Background...", radius);
         run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
@@ -69,26 +70,44 @@ function processFile(path) {
         //Save ROIs
         saveAs("Tiff", splitDir + imgName + "Green-ROI.tiff");
 
-        
         //Foci berechnen
         for(j = 0; j < Table.size; j++) {
             rInt = Table.get("RawIntDen", j);
             foci = rInt/255;
             setResult("FociGreen", j, foci);
         }
+        saveAs("Results", splitDir + imgName + "-G.csv");
+
+
+        //Red Channel
+        run("Clear Results");
+        selectWindow(imgName+" (blue)"); //DAPI
+        run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
+        selectWindow(imgName+" (red)");
+        run("Subtract Background...", radius);
+        run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
+        roiManager("Show None");
+        roiManager("Show All");
+        roiManager("Measure");
+        selectWindow(imgName+" (red)" + " Maxima");
+        //Save ROIs
+        saveAs("Tiff", splitDir + imgName + "Red-ROI.tiff");
+
+        //Foci berechnen
+        for(j = 0; j < Table.size; j++) {
+            rInt = Table.get("RawIntDen", j);
+            foci = rInt/255;
+            setResult("FociRed", j, foci);
+        }
         //Save results
-        saveAs("Results", splitDir + imgName + ".csv");
+        saveAs("Results", splitDir + imgName + "-R.csv");
         run("Close All");
         
         } 
 }
 
-exec_time = (getTime()-start)/1000;
 
-run("Quit");
-/*
-Dialog.create("Finished");
-Dialog.addMessage("Finished after: "+ exec_time + "s. Check Results folder");
-Dialog.show();
-*/
+
+//run("Quit");
+
 
