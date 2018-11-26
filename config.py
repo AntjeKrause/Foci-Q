@@ -16,10 +16,12 @@ else:
 Write configuration (tolerated noise level, rolling background subtraction radius)
 to foci.cfg in given path
 """
-def writeCfg(path, imgpath, noise, background, green, red):
+def writeCfg(path, imgpath, noise_g, noise_r, background_g, background_r, green, red):
     fw = open(path + pathVar + "foci.cfg", "w")
-    fw.write("noise="+str(noise)+"\n")
-    fw.write("background="+str(background)+"\n")
+    fw.write("noise_g="+str(noise_g)+"\n")
+    fw.write("background_g="+str(background_g)+"\n")
+    fw.write("noise_r="+str(noise_r)+"\n")
+    fw.write("background_r="+str(background_r)+"\n")
     if str(imgpath).endswith("/"):
         fw.write("path="+str(imgpath)+"\n")
     else:
@@ -39,12 +41,14 @@ def readCfg(path):
     settings = fr.readlines()
     settings = [line.rstrip('\n') for line in settings]
     fr.close()
-    noise = settings[0]
-    background = settings[1]
-    path = settings[2]
-    green = settings[3]
-    red = settings[4]
-    return noise[6:], background[11:], path[5:], green[6:], red[4:]
+    noise_g = settings[0]
+    background_g = settings[1]
+    noise_r = settings[2]
+    background_r = settings[3]
+    path = settings[4]
+    green = settings[5]
+    red = settings[6]
+    return noise_g[8:], background_g[13:], noise_r[8:], background_r[13:], path[5:], green[6:], red[4:]
 
 
 print(readCfg(os.getcwd()))

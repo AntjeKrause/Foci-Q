@@ -1,11 +1,13 @@
 file = File.openAsString("foci.cfg");
 params = split(file, "\n");
 print(params[1])
-radius = substring(params[1], 11)
-noise = substring(params[0], 6)
-dir = substring(params[2], 5)
-green = substring(params[3], 6)
-red = substring(params[4], 4)
+radius_g = substring(params[1], 13)
+noise_g = substring(params[0], 8)
+radius_r = substring(params[3], 13)
+noise_r = substring(params[2], 8)
+dir = substring(params[4], 5)
+green = substring(params[5], 6)
+red = substring(params[6], 4)
 start = getTime();
 count = 0;
 countFiles(dir);
@@ -65,8 +67,8 @@ function processFile(path) {
 
             //Green Channel
             selectWindow(imgName+" (green)");
-            run("Subtract Background...", radius);
-            run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
+            run("Subtract Background...", radius_g);
+            run("Find Maxima...", "noise=" + noise_g +" output=[Single Points]");
             roiManager("Show None");
             roiManager("Show All");
             roiManager("Measure");
@@ -90,8 +92,8 @@ function processFile(path) {
             selectWindow(imgName+" (blue)"); //DAPI
             run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
             selectWindow(imgName+" (red)");
-            run("Subtract Background...", radius);
-            run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
+            run("Subtract Background...", radius_r);
+            run("Find Maxima...", "noise=" + noise_r +" output=[Single Points]");
             roiManager("Show None");
             roiManager("Show All");
             roiManager("Measure");

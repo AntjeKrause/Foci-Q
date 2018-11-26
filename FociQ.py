@@ -52,7 +52,7 @@ class App:
                        
         def startThread():
             #starts a thread which starts ImageJ
-             config.writeCfg(os.getcwd(), dirname, self.noise_field.get("1.0", END+"-1c"),  self.background_field.get("1.0", END+"-1c"), self.channel_green.get(), self.channel_red.get())
+             config.writeCfg(os.getcwd(), dirname, self.noise_field.get("1.0", END+"-1c"), self.noise_field_r.get("1.0", END+"-1c"), self.background_field.get("1.0", END+"-1c"), self.background_field_r.get("1.0", END+"-1c"), self.channel_green.get(), self.channel_red.get())
              updateLog("Saving parameters...")
              updateLog("Starting IJ macro...")
              global t
@@ -93,59 +93,76 @@ class App:
                 updateLog("Error: ij.jar not found.")
                 
         global dirname
-        dirname = config.readCfg(os.getcwd())[2]
+        dirname = config.readCfg(os.getcwd())[4]
         #master settings
         self.master = master
         master.title("FociQ")
-        master.geometry('470x380')
+        master.geometry('600x380')
         #master.configure(background='grey')
         self.font = tkFont.Font(family="courier", size=8)
         #Path text label and input label
         self.choose_label = Label(master, text = "Image path: ")
         self.choose_label.grid(column = 0, row = 0, sticky = W, padx = 10)
-        self.path_field_image =Text(root, height = 1, width = 50)
-        self.path_field_image.grid(column = 0, row = 1, padx = 10, columnspan = 2)
-        self.path_field_image.insert(CURRENT, config.readCfg(os.getcwd())[2])
+        self.path_field_image =Text(root, height = 1, width =100)
+        self.path_field_image.grid(column = 0, row = 1, padx = 10, columnspan = 7, sticky = W)
+        self.path_field_image.insert(CURRENT, config.readCfg(os.getcwd())[4])
         #Choose path btn
         self.choose_btn = Button(root, text="...", command = choosePath)
-        self.choose_btn.grid(column = 3, row = 1, sticky = W)
+        self.choose_btn.grid(column = 8, row = 1, sticky = W)
         #Noise text label and input label
         self.noise_label = Label(master, text = "Noise (Find Maxima): ")
-        self.noise_label.grid(column = 0, row = 3, sticky = W, padx = 10)
-        self.noise_field = Text(root, height = 1, width = 5)
+        self.noise_label.grid(column = 0, row = 3, sticky = W, padx = 10, columnspan=1)
+        self.noise_field_label = Label(master, text = "Green Channel: ", fg = "green")
+        self.noise_field_label.grid(column = 0, row = 4, sticky = W, padx = 10, columnspan=1)
+        self.noise_field = Text(root, height = 1, width = 10)
         self.noise_field.insert(CURRENT, config.readCfg(os.getcwd())[0])
-        self.noise_field.grid(column = 0, row = 4, sticky = W, padx = 10)
+        self.noise_field.grid(column = 1, row = 4, sticky = W, padx = 0)
+        self.noise_field_label_r = Label(master, text = "Red Channel: ", fg = "red")
+        self.noise_field_label_r.grid(column = 2, row = 4, sticky = W, padx = 10, columnspan=1)
+        self.noise_field_r = Text(root, height = 1, width = 10)
+        self.noise_field_r.insert(CURRENT, config.readCfg(os.getcwd())[2])
+        self.noise_field_r.grid(column = 3, row = 4, sticky = W, padx = 0)
+        
         #Background subtraction radius text label and input label
         self.background_label = Label(master, text = "Background Subtraction Radius: ")
-        self.background_label.grid(column = 0, row = 5, sticky = W, padx = 10)
-        self.background_field = Text(root, height = 1, width = 5)
+        self.background_label.grid(column = 0, row = 5, sticky = W, padx = 10, columnspan=1)
+        self.background_field_label = Label(master, text = "Green Channel:", padx = 10, fg = "green")
+        self.background_field_label.grid(column = 0, row = 6, sticky = W, padx = 0, columnspan=1)
+        self.background_field = Text(root, height = 1, width = 10)
         self.background_field.insert(CURRENT, config.readCfg(os.getcwd())[1])
-        self.background_field.grid(column = 0, row = 6, sticky = W, padx = 10)
+        self.background_field.grid(column = 1, row = 6, sticky = W, padx = 0)
+        
+        self.background_field_label_r = Label(master, text = "Red Channel:", padx = 10, fg = "red")
+        self.background_field_label_r.grid(column = 2, row = 6, sticky = W, padx = 0)
+        self.background_field_r = Text(root, height = 1, width = 10)
+        self.background_field_r.insert(CURRENT, config.readCfg(os.getcwd())[3])
+        self.background_field_r.grid(column = 3, row = 6, sticky = W, padx = 0)
+
         #Checkbox for Channels 
-        self.channel_green =  IntVar(value=config.readCfg(os.getcwd())[3])
-        self.channel_red = IntVar(value=config.readCfg(os.getcwd())[4])
+        self.channel_green =  IntVar(value=config.readCfg(os.getcwd())[5])
+        self.channel_red = IntVar(value=config.readCfg(os.getcwd())[6])
         self.channel_box_label = Label(master, text = "Foci Channels:")
         self.channel_box_label.grid(column = 0, row = 7, sticky = W, padx = 10)
-        self.channel_box_green = Checkbutton(master, text = "Green Channel", variable=self.channel_green)
+        self.channel_box_green = Checkbutton(master, text = "Green", variable=self.channel_green, fg = "green")
         self.channel_box_green.grid(column = 0, row = 8, sticky = W, padx = 10)
-        self.channel_box_Red = Checkbutton(master, text = "Red Channel", variable=self.channel_red)
+        self.channel_box_Red = Checkbutton(master, text = "Red", variable=self.channel_red, fg = "red")
         self.channel_box_Red.grid(column = 0, row = 9, sticky = W, padx = 10)
         #User log text and input label
         self.user_log_label = Label(master, text = "Log:")
         self.user_log_label.grid(column = 0, row = 10, sticky = W, padx = 10)
-        self.user_log = ScrolledText.ScrolledText(root, height = 5, width = 50, font = self.font)
-        self.user_log.grid(column = 0, row = 11, sticky = W, padx = 10)
+        self.user_log = ScrolledText.ScrolledText(root, height = 5, width = 55, font = self.font)
+        self.user_log.grid(column = 0, row = 11, sticky = W, padx = 10, columnspan = 5)
         self.user_log.configure(state="disabled")
         updateLog("Ready...")
         #Execute button for foci counting
         self.start_btn = Button(root, text="Go!", command = lambda : checkInput(dirname))
         self.start_btn.grid(column = 0, row = 12, sticky = W, padx = 10, pady = 10)
         
-        self.version = Label(master, text = "1.0.0")
-        self.version.grid(column = 1, row = 13, sticky = E)
+        self.version = Label(master, text = "1.1.0")
+        self.version.grid(column = 6, row = 15, sticky = E)
 
 root = Tk()
 root.iconbitmap("icon.ico")
-
+root.grid_columnconfigure(1, weight=1)
 gui = App(root)
 root.mainloop()

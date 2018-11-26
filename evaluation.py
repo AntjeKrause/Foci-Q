@@ -12,16 +12,16 @@ import os
 import pandas as pd
 import config
 global files, filesRed, green, red
-green = int(config.readCfg(os.getcwd())[3])
-red = int(config.readCfg(os.getcwd())[4])
+green = int(config.readCfg(os.getcwd())[5])
+red = int(config.readCfg(os.getcwd())[6])
 
 files = []
 filesRed = []
 
 def scanFolders(path):
     global files, filesRed, green, red
-    green = int(config.readCfg(os.getcwd())[3])
-    red = int(config.readCfg(os.getcwd())[4])
+    green = int(config.readCfg(os.getcwd())[5])
+    red = int(config.readCfg(os.getcwd())[6])
     for entry in os.scandir(path):
         if entry.is_dir():
             if (not entry.path.endswith("Results")):
