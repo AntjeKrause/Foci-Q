@@ -4,6 +4,8 @@ print(params[1])
 radius = substring(params[1], 11)
 noise = substring(params[0], 6)
 dir = substring(params[2], 5)
+green = substring(params[3], 6)
+red = substring(params[4], 4)
 start = getTime();
 count = 0;
 countFiles(dir);
@@ -37,7 +39,7 @@ function processFiles(dir) {
        }
        else {
 		splitDir=dir + "Results/"; 
-		print(splitDir);
+		//print(splitDir);
 		File.makeDirectory(splitDir); 
           showProgress(n++, count);
           path = dir+list[i];
@@ -57,50 +59,56 @@ function processFile(path) {
         run("16-bit");
         run("Smooth");
         setAutoThreshold("Li dark");
-        run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
 
-        //Green Channel
-        selectWindow(imgName+" (green)");
-        run("Subtract Background...", radius);
-        run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
-        roiManager("Show None");
-        roiManager("Show All");
-        roiManager("Measure");
-        selectWindow(imgName+" (green)" + " Maxima");
-        //Save ROIs
-        saveAs("Tiff", splitDir + imgName + "Green-ROI.tiff");
+        if(green == 1){
+            run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
 
-        //Foci berechnen
-        for(j = 0; j < Table.size; j++) {
-            rInt = Table.get("RawIntDen", j);
-            foci = rInt/255;
-            setResult("FociGreen", j, foci);
+            //Green Channel
+            selectWindow(imgName+" (green)");
+            run("Subtract Background...", radius);
+            run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
+            roiManager("Show None");
+            roiManager("Show All");
+            roiManager("Measure");
+            selectWindow(imgName+" (green)" + " Maxima");
+            //Save ROIs
+            saveAs("Tiff", splitDir + imgName + "Green-ROI.tiff");
+    
+            //Foci berechnen
+            for(j = 0; j < Table.size; j++) {
+                rInt = Table.get("RawIntDen", j);
+                foci = rInt/255;
+                setResult("FociGreen", j, foci);
+            }
+            saveAs("Results", splitDir + imgName + "-G.csv");
+    
         }
-        saveAs("Results", splitDir + imgName + "-G.csv");
+       
+        if(red == 1){
+            //Red Channel
+            run("Clear Results");
+            selectWindow(imgName+" (blue)"); //DAPI
+            run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
+            selectWindow(imgName+" (red)");
+            run("Subtract Background...", radius);
+            run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
+            roiManager("Show None");
+            roiManager("Show All");
+            roiManager("Measure");
+            selectWindow(imgName+" (red)" + " Maxima");
+            //Save ROIs
+            saveAs("Tiff", splitDir + imgName + "Red-ROI.tiff");
 
-
-        //Red Channel
-        run("Clear Results");
-        selectWindow(imgName+" (blue)"); //DAPI
-        run("Analyze Particles...", "size=700-Infinity exclude clear summarize add");
-        selectWindow(imgName+" (red)");
-        run("Subtract Background...", radius);
-        run("Find Maxima...", "noise=" + noise +" output=[Single Points]");
-        roiManager("Show None");
-        roiManager("Show All");
-        roiManager("Measure");
-        selectWindow(imgName+" (red)" + " Maxima");
-        //Save ROIs
-        saveAs("Tiff", splitDir + imgName + "Red-ROI.tiff");
-
-        //Foci berechnen
-        for(j = 0; j < Table.size; j++) {
-            rInt = Table.get("RawIntDen", j);
-            foci = rInt/255;
-            setResult("FociRed", j, foci);
+            //Foci berechnen
+            for(j = 0; j < Table.size; j++) {
+                rInt = Table.get("RawIntDen", j);
+                foci = rInt/255;
+                setResult("FociRed", j, foci);
+            }
+            //Save results
+            saveAs("Results", splitDir + imgName + "-R.csv");
         }
-        //Save results
-        saveAs("Results", splitDir + imgName + "-R.csv");
+        
         run("Close All");
         
         } 
@@ -108,6 +116,6 @@ function processFile(path) {
 
 
 
-//run("Quit");
+run("Quit");
 
 

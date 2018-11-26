@@ -16,7 +16,7 @@ else:
 Write configuration (tolerated noise level, rolling background subtraction radius)
 to foci.cfg in given path
 """
-def writeCfg(path, imgpath, noise, background):
+def writeCfg(path, imgpath, noise, background, green, red):
     fw = open(path + pathVar + "foci.cfg", "w")
     fw.write("noise="+str(noise)+"\n")
     fw.write("background="+str(background)+"\n")
@@ -24,6 +24,8 @@ def writeCfg(path, imgpath, noise, background):
         fw.write("path="+str(imgpath)+"\n")
     else:
         fw.write("path="+str(imgpath)+"/\n")
+    fw.write("green="+str(green)+"\n")
+    fw.write("red="+str(red)+"\n")
     fw.close()
     pass
 
@@ -40,4 +42,9 @@ def readCfg(path):
     noise = settings[0]
     background = settings[1]
     path = settings[2]
-    return noise[6:], background[11:], path[5:]
+    green = settings[3]
+    red = settings[4]
+    return noise[6:], background[11:], path[5:], green[6:], red[4:]
+
+
+print(readCfg(os.getcwd()))

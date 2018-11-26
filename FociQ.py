@@ -16,6 +16,7 @@ import tkinter.font as tkFont
 from tkinter import filedialog
 import config
 import evaluation
+import datetime
 
 folders = []
 files = []
@@ -51,7 +52,7 @@ class App:
                        
         def startThread():
             #starts a thread which starts ImageJ
-             config.writeCfg(os.getcwd(), dirname, self.noise_field.get("1.0", END+"-1c"),  self.background_field.get("1.0", END+"-1c"))
+             config.writeCfg(os.getcwd(), dirname, self.noise_field.get("1.0", END+"-1c"),  self.background_field.get("1.0", END+"-1c"), self.channel_green.get(), self.channel_red.get())
              updateLog("Saving parameters...")
              updateLog("Starting IJ macro...")
              global t
@@ -60,7 +61,8 @@ class App:
 
         def startIj():
             #start ImageJ in new subprocess with given params
-            global child
+            global child, start_time_ij
+            start_time_ij = datetime.datetime.now().replace(microsecond=0)
             child = subprocess.Popen(["java", "-jar", "ij.jar", "-m", "foci.ijm"])            #,  "-m", "foci.ijm"
             t1 = threading.Thread(target=startEvaluation)
             t1.start()
@@ -72,7 +74,8 @@ class App:
             updateLog("IJ done...")
             updateLog("Starting evaluation...")
             evaluation.scanFolders(dirname)
-            updateLog("Finished. Check Results folder!")
+            computation_time = datetime.datetime.now().replace(microsecond=0) - start_time_ij
+            updateLog("Finished after " + str(computation_time) +". Check Results folder!")
             
             
         def checkIJ():
@@ -94,7 +97,7 @@ class App:
         #master settings
         self.master = master
         master.title("FociQ")
-        master.geometry('470x300')
+        master.geometry('470x380')
         #master.configure(background='grey')
         self.font = tkFont.Font(family="courier", size=8)
         #Path text label and input label
@@ -118,19 +121,28 @@ class App:
         self.background_field = Text(root, height = 1, width = 5)
         self.background_field.insert(CURRENT, config.readCfg(os.getcwd())[1])
         self.background_field.grid(column = 0, row = 6, sticky = W, padx = 10)
+        #Checkbox for Channels 
+        self.channel_green =  IntVar(value=config.readCfg(os.getcwd())[3])
+        self.channel_red = IntVar(value=config.readCfg(os.getcwd())[4])
+        self.channel_box_label = Label(master, text = "Foci Channels:")
+        self.channel_box_label.grid(column = 0, row = 7, sticky = W, padx = 10)
+        self.channel_box_green = Checkbutton(master, text = "Green Channel", variable=self.channel_green)
+        self.channel_box_green.grid(column = 0, row = 8, sticky = W, padx = 10)
+        self.channel_box_Red = Checkbutton(master, text = "Red Channel", variable=self.channel_red)
+        self.channel_box_Red.grid(column = 0, row = 9, sticky = W, padx = 10)
         #User log text and input label
         self.user_log_label = Label(master, text = "Log:")
-        self.user_log_label.grid(column = 0, row = 7, sticky = W, padx = 10)
+        self.user_log_label.grid(column = 0, row = 10, sticky = W, padx = 10)
         self.user_log = ScrolledText.ScrolledText(root, height = 5, width = 50, font = self.font)
-        self.user_log.grid(column = 0, row = 8, sticky = W, padx = 10)
+        self.user_log.grid(column = 0, row = 11, sticky = W, padx = 10)
         self.user_log.configure(state="disabled")
         updateLog("Ready...")
         #Execute button for foci counting
         self.start_btn = Button(root, text="Go!", command = lambda : checkInput(dirname))
-        self.start_btn.grid(column = 0, row = 9, sticky = W, padx = 10, pady = 10)
+        self.start_btn.grid(column = 0, row = 12, sticky = W, padx = 10, pady = 10)
         
-        self.version = Label(master, text = "0.1.2")
-        self.version.grid(column = 1, row = 10, sticky = E)
+        self.version = Label(master, text = "1.0.0")
+        self.version.grid(column = 1, row = 13, sticky = E)
 
 root = Tk()
 root.iconbitmap("icon.ico")
