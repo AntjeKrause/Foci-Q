@@ -97,7 +97,7 @@ class App:
         #master settings
         self.master = master
         master.title("FociQ")
-        master.geometry('600x380')
+        master.geometry('650x380')
         #master.configure(background='grey')
         self.font = tkFont.Font(family="courier", size=8)
         #Path text label and input label
@@ -108,7 +108,7 @@ class App:
         self.path_field_image.insert(CURRENT, config.readCfg(os.getcwd())[4])
         #Choose path btn
         self.choose_btn = Button(root, text="...", command = choosePath)
-        self.choose_btn.grid(column = 8, row = 1, sticky = W)
+        self.choose_btn.grid(column = 8, row = 1, sticky = W, padx = 10)
         #Noise text label and input label
         self.noise_label = Label(master, text = "Noise (Find Maxima): ")
         self.noise_label.grid(column = 0, row = 3, sticky = W, padx = 10, columnspan=1)
@@ -150,7 +150,7 @@ class App:
         #User log text and input label
         self.user_log_label = Label(master, text = "Log:")
         self.user_log_label.grid(column = 0, row = 10, sticky = W, padx = 10)
-        self.user_log = ScrolledText.ScrolledText(root, height = 5, width = 55, font = self.font)
+        self.user_log = ScrolledText.ScrolledText(root, height = 5, width = 95, font = self.font)
         self.user_log.grid(column = 0, row = 11, sticky = W, padx = 10, columnspan = 5)
         self.user_log.configure(state="disabled")
         updateLog("Ready...")

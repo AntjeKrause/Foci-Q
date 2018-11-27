@@ -1,6 +1,5 @@
 file = File.openAsString("foci.cfg");
 params = split(file, "\n");
-print(params[1])
 radius_g = substring(params[1], 13)
 noise_g = substring(params[0], 8)
 radius_r = substring(params[3], 13)
@@ -27,7 +26,6 @@ function countFiles(dir) {
 }
 
 function processFiles(dir) {
-    //print("test1");
    list = getFileList(dir);
    for (i=0; i<list.length; i++) {
        if (endsWith(list[i], "/")){
@@ -41,7 +39,6 @@ function processFiles(dir) {
        }
        else {
 		splitDir=dir + "Results/"; 
-		//print(splitDir);
 		File.makeDirectory(splitDir); 
           showProgress(n++, count);
           path = dir+list[i];
@@ -115,8 +112,6 @@ function processFile(path) {
         
         } 
 }
-
-
 
 run("Quit");
 
